@@ -22,6 +22,8 @@ class MediaController extends AppController {
 		{
 			exit('{"success":0,"message":"has to be post"}');
 		}
+		$this->Media->id = $this->request->data['Media']['id'];
+		unlink(ROOT.'/app/webroot'.$this->Media->field('url'));
 		$this->Media->delete($this->request->data['Media']['id']);
 		exit('{"success":1}');
 	}
