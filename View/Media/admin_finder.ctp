@@ -89,7 +89,7 @@ endforeach;
           item.addClass('loading');
           var postData = $(this).find('form').serializeArray();
           $.ajax({
-            url:BaseUrl+'media/delete/',
+            url:BaseUrl+'/media/delete/',
             data:postData,
             context:{
               item:item
