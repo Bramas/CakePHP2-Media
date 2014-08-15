@@ -9,8 +9,12 @@ class MediaController extends AppController {
 
 	public function admin_finder($domId = null)
 	{
-		$this->set('Media', $this->Media->find('all'));
 		$this->layout = 'empty';
+		if(!empty($this->request->params['named']['layout']))
+		{
+			$this->layout = $this->request->params['named']['layout'];
+		}
+		$this->set('Media', $this->Media->find('all'));
 		if(!empty($domId))
 		{
 			$this->set('domId', $domId);

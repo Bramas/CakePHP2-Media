@@ -1,11 +1,8 @@
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal">
-    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-  </button>
-  <h4 class="modal-title" id="myModalLabel">Mes Documents</h4>
-</div>
-<div class="modal-body">
-<div class="media-items">
+<?php
+$this->start('title');
+echo 'Mes Documents';
+$this->end();
+?><div class="media-items">
 <?php
 $Media[] = array('Media' => array('id'=>'','url' => 'empty','name' => 'empty'));
 foreach($Media as $media):
@@ -39,13 +36,8 @@ endforeach;
     'label'=>'Nouveau media', 
     'multiple' => true,
     'onFileUploaded'=>"$('form.media-add').submit();"));
-  echo $this->Form->end('Ajouter');
+  echo $this->Form->end();
 ?>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-  <button type="button" class="btn btn-primary btn-disabled">Choisir</button>
-</div>
 <script type="text/javascript">
   jQuery(function($){
 
@@ -103,11 +95,30 @@ endforeach;
       });
 
       $('.modal-footer .btn-primary').on('click', function(){
+        <?php 
+        if($domId == 'tinymce')
+        {
+          ?>
+
+            if(top.current_tinymce_callback)
+            {
+              var m = $('.media-item.selected').first()
+              top.current_tinymce_callback(BaseUrl+m.attr('data-media-url'), {});
+            }
+            top.current_tinymce_callback = false;
+            top.tinymce.activeEditor.windowManager.close();
+<?php
+        }else{
+        ?>
+
         $('.media-item.selected').each(function(){
           $('#<?php echo $domId; ?>').val($(this).attr('data-media-url'));
           $('#media-<?php echo $domId; ?> .media-placeholder').html('<img src="'+BaseUrl+$(this).attr('data-media-url')+'" height="50" />');
         });
         $('#<?php echo $domId; ?>-finder  .media-modal-finder').modal('hide');
+
+        <?php
+        } ?>
       });
   });
 </script> 
