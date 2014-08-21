@@ -2,11 +2,28 @@
 $this->start('title');
 echo 'Mes Documents';
 $this->end();
+
 ?><div class="media-items">
 <?php
 $Media[] = array('Media' => array('id'=>'','url' => 'empty','name' => 'empty'));
 foreach($Media as $media):
   $media = $media['Media'];
+
+  $fileExplode = explode('.', $media['url']);
+  if(empty($fileExplode))
+  {
+    continue;
+  }
+  $ext = strtolower(end($fileExplode));
+  if(in_array($ext, array('jpg', 'jpeg', 'gif', 'bmp', 'png')))
+  {
+    $ext = 'img';
+  }
+  if(in_array($ext, array('pdf','doc','docx', 'ods', 'odf')))
+  {
+    //$ext = 'img';
+  }
+
   ?>
 <div data-media-url="<?php echo $media['url']; ?>" class="media-item<?php echo $media['url']=='empty'?' media-empty':''; ?>">
   <div class="media-name">
@@ -19,7 +36,18 @@ foreach($Media as $media):
         echo $this->Form->end(); ?>
   </div>
   <div class="media-icon">
-    <?php echo $this->Html->image($media['url'], array('height' => 50)); ?>
+    <?php 
+    if($ext == "img")
+    {
+      echo $this->Html->image($media['url'], array('height' => 50)); 
+    }
+    else
+    {
+      echo $this->Html->image('/media/img/file.png', array('height' => 50)); 
+    }
+    
+
+    ?>
   </div>
 </div>
 <?php
