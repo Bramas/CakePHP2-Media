@@ -89,7 +89,7 @@ endforeach;
               m.attr('data-media-url', data.url);
               var fileExploded = data.url.toLowerCase().split('.');
               var imgExt = ['jpg','jpeg','gif','bmp','png'];
-              if(fileExploded.length && imgExt.indexOf(fileExploded.slice(-1)[0]) != -1);
+              if(fileExploded.length && imgExt.indexOf(fileExploded.slice(-1)[0].toLowerCase()) != -1)
               {
                 m.find('.media-icon img').attr('src', BaseUrl+data.url);
               }
