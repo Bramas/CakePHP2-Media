@@ -5,16 +5,19 @@ $this->end();
 
 ?><div class="media-items">
 <?php
-$Media[] = array('Media' => array('id'=>'','url' => 'empty','name' => 'empty'));
+$Media[] = array('Media' => array('id'=>false,'url' => 'empty','name' => 'empty'));
 foreach($Media as $media):
   $media = $media['Media'];
 
   $fileExplode = explode('.', $media['url']);
   if(empty($fileExplode))
   {
-    continue;
+    $ext = '';
   }
-  $ext = strtolower(end($fileExplode));
+  else
+  {
+    $ext = strtolower(end($fileExplode));
+  }
   if(in_array($ext, array('jpg', 'jpeg', 'gif', 'bmp', 'png')))
   {
     $ext = 'img';
@@ -84,7 +87,13 @@ endforeach;
               var m = $('.media-items .media-item.media-empty').clone();
               m.find('.media-name').html(data.name);
               m.attr('data-media-url', data.url);
-              m.find('.media-icon img').attr('src', BaseUrl+data.url);
+              var fileExploded = data.url.toLowerCase().split('.');
+              var imgExt = ['jpg','jpeg','gif','bmp','png'];
+              if(fileExploded.length && imgExt.indexOf(fileExploded.slice(-1)[0]) != -1);
+              {
+                m.find('.media-icon img').attr('src', BaseUrl+data.url);
+              }
+              
               m.find('.media-delete .media-item-input-id').val(data.id);
               m.removeClass('media-empty');
               $('.media-items').append(m);
