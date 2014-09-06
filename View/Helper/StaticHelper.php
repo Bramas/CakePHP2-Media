@@ -17,7 +17,7 @@ class StaticHelper extends HtmlHelper
 			&& strpos($path, '://') === false 
 			&& strpos($path, '//') !== 0)
 		{
-			return $staticDomain.parent::assetUrl($path, $options);
+			return $staticDomain.$path;
 		}
 		return parent::url($path, $options);
 	}
