@@ -14,7 +14,7 @@ class MediaController extends AppController {
 		{
 			$this->layout = $this->request->params['named']['layout'];
 		}
-		$this->set('Media', $this->Media->find('all'));
+		$this->set('Media', $this->Media->find('all', array('order' => array('Media.name ASC'))));
 		if(!empty($domId))
 		{
 			$this->set('domId', $domId);
@@ -42,5 +42,4 @@ class MediaController extends AppController {
 		exit('{"success":1,"id":'.$this->Media->id.',"name":"'.$this->Media->field('name').'","url":"'.$this->Media->field('url').'"}');
 		
 	}
-
 }

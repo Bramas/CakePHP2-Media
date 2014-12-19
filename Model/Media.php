@@ -10,4 +10,17 @@ class Media extends AppModel
 	       		'url' => 'medias/:y/:m/:basename')
 	       )
 	    );
+    
+    function afterFind($results, $primary = false)
+    {
+        foreach($results as &$result)
+        {
+            if(!isset($result[$this->alias]['file_info']))
+            {
+                $result[$this->alias]['file_info'] = '{}';
+            }
+            $result[$this->alias]['file_info'] = json_decode($result[$this->alias]['file_info'], true);
+        }
+        return $results;
+    }
 }
