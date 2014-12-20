@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('WideImage', 'Media.Lib/WideImage');
 
 class MediaController extends AppController {
 
@@ -20,6 +21,21 @@ class MediaController extends AppController {
 			$this->set('domId', $domId);
 		}
 	}
+	public function admin_edit_image($id)
+	{
+		$this->layout = 'empty';
+		if(!empty($this->request->params['named']['layout']))
+		{
+			$this->layout = $this->request->params['named']['layout'];
+		}
+        
+        $image = $this->Media->findById($id);
+        if(empty($image))
+        {
+            exit('Erreur');
+        }
+		$this->set('image', $image);
+	}
 	public function admin_delete()
 	{
 		if(!$this->request->is('post'))
@@ -27,6 +43,7 @@ class MediaController extends AppController {
 			exit('{"success":0,"message":"has to be post"}');
 		}
 		$this->Media->id = $this->request->data['Media']['id'];
+        clean_thumbs($this->Media->field('url'));
 		unlink(ROOT.'/app/webroot'.$this->Media->field('url'));
 		$this->Media->delete($this->request->data['Media']['id']);
 		exit('{"success":1}');
@@ -42,4 +59,19 @@ class MediaController extends AppController {
 		exit('{"success":1,"id":'.$this->Media->id.',"name":"'.$this->Media->field('name').'","url":"'.$this->Media->field('url').'"}');
 		
 	}
+	public function admin_crop($id, $x, $y, $width, $height)
+	{
+        $image = $this->Media->findById($id);
+        if(empty($image))
+        {
+            exit('{"success":0, "error":1, "message":"id does not exists"}');
+        }
+        if(!file_exists(WWW_ROOT.$image['Media']['url']))
+        {
+            exit('{"success":0, "error":1, "message":"file does not exists"}');
+        }
+        WideImage::load(WWW_ROOT.$image['Media']['url'])->crop($x, $y, $width, $height)->saveToFile(WWW_ROOT.$image['Media']['url']);
+        $this->Media->clean_thumbs($image['Media']['url']);
+        exit('{"success":1}');
+    }
 }

@@ -44,7 +44,7 @@ foreach($Media as $media):
   }
     
   ?>
-<div <?php echo $info; ?> data-media-ext="<?php echo $ext; ?>" data-media-created="<?php echo $media['created']; ?>" data-media-name="<?php echo $media['name']; ?>" data-media-url="<?php echo $media['url']; ?>" class="media-item<?php echo $media['url']=='empty'?' media-empty':' media-item-'. $media['id']; ?>">
+<div <?php echo $info; ?> data-media-id="<?php echo $media['id']; ?>" data-media-ext="<?php echo $ext; ?>" data-media-created="<?php echo $media['created']; ?>" data-media-name="<?php echo $media['name']; ?>" data-media-url="<?php echo $media['url']; ?>" class="media-item<?php echo $media['url']=='empty'?' media-empty':' media-item-'. $media['id']; ?>">
   <div class="media-icon">
     <?php 
     if($ext == "img")
@@ -146,6 +146,7 @@ function bytesToSize(bytes) {
               var m = $('.media-items .media-item.media-empty').clone();
               m.find('.media-name').html(data.name);
               m.attr('data-media-url', data.url);
+              m.attr('data-media-id', data.id);
               m.attr('data-media-name', data.name); 
               var fileExploded = data.url.toLowerCase().split('.');
               var imgExt = ['jpg','jpeg','gif','bmp','png'];
@@ -227,7 +228,11 @@ function bytesToSize(bytes) {
                 if($(this).attr('data-media-size'))
                 {
                     $('.media-file-info').append('<div class="media-file-info-item media-file-info-size"><span>Taille du fichier:</span><span>'+bytesToSize($(this).attr('data-media-size'))+'</span></div>');
-                }     
+                } 
+                if($(this).attr('data-media-ext') == 'img')
+                {
+                    $('.media-file-info').append('<a data-media-id="'+$(this).attr('data-media-id')+'" class="media-image-edit" "href="#">Editer</a> - ');
+                }
                 $('.media-file-info').append('<a href="'+BaseUrl+$(this).attr('data-media-url')+'">Télécharger</a> - ');
                  $('.media-file-info').append($(this).find('.media-delete').clone());
             }
@@ -277,6 +282,14 @@ function bytesToSize(bytes) {
           }
       });
       
+      $('.media-file-info').on('click', '.media-image-edit', function(e)
+      {
+          e.preventDefault();
+          var m = $('<div role="dialog" class="media-image-edit-modal modal fade bs-example-modal-lg"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button><h4 class="modal-title" id="myLargeModalLabel">Large modal</h4></div><div class="modal-body">'+
+    '<iframe src="'+BaseUrl+'/media/edit_image/'+$(this).attr('data-media-id')+'/layout:iframe_modal"></iframe></div></div></div></div>');
+          //m.appendTo(document);
+          m.modal({show:true});
+      });
 
       $('.modal-footer .btn-primary').on('click', function(){
         <?php 

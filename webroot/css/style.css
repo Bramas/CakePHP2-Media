@@ -125,3 +125,66 @@
 {
     margin-right: 20px;
 }
+
+.media-image-edit-modal .modal-dialog
+{
+    height: 90%;
+}
+.media-image-edit-modal iframe, .media-image-edit-modal .modal-content
+{
+    height: 100%;
+}
+.media-image-edit-modal .modal-content .modal-body
+{
+    position: absolute;
+    bottom: 2px;
+    top: 56px;
+    left: 2px;
+    right: 2px;
+    width: auto;
+    padding: 0;
+}
+.media-image-edit-modal iframe
+{
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+
+/* Edition */
+
+.media-edit-wrapper
+{
+    position: relative;
+    min-height: 450px;
+}
+.media-edit-image-wrapper
+{
+    left:0;
+    right: 250px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    height: 100%;
+}
+.media-edit-image-wrapper img
+{
+    max-height: 100%;
+    max-width: 100%;
+}
+.media-edit-desc-wrapper
+{
+    position: absolute;
+    width: 200px;
+    right: 0;
+}
+.media-edit-desc-preview{
+    overflow: hidden;
+}
