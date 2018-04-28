@@ -28,7 +28,7 @@ class MediaController extends AppController {
 		{
 			$this->layout = $this->request->params['named']['layout'];
 		}
-        
+
         $image = $this->Media->findById($id);
         if(empty($image))
         {
@@ -57,7 +57,7 @@ class MediaController extends AppController {
 		$this->request->data['Media'] = array('name' => $this->request->data['Upload']['url']['name']);
 		$this->Media->save($this->request->data);
 		exit('{"success":1,"id":'.$this->Media->id.',"name":"'.$this->Media->field('name').'","url":"'.$this->Media->field('url').'"}');
-		
+
 	}
 	public function admin_crop($id, $x, $y, $width, $height)
 	{
@@ -74,4 +74,14 @@ class MediaController extends AppController {
         $this->Media->clean_thumbs($image['Media']['url']);
         exit('{"success":1}');
     }
+	public function serve($year, $month, $name)
+	{
+			preg_match('/^(.*)\.([^.]+)_([^_]*)$/', $name, $matches);
+			//debug($matches);
+			header("Content-type:image/".$matches[2]);
+			header("Cache-Control: public, max-age=31536000");
+			header("Expires: ".date('r',time()+31536000)); // set expiration time
+      readfile (APP.'webroot/medias/'.$year.'/'.$month.'/'.$matches[1].'.'.$matches[2]);
+			exit();
+  }
 }
